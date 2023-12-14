@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 // Interface for ERC721 token
 interface IERC721 {
@@ -12,7 +11,7 @@ interface IERC721 {
     function _safeMint(address to, uint256 tokenId) external;
 }
 
-contract NFTMarketplace is Initializable, AccessControlUpgradeable, ReentrancyGuardUpgradeable {
+contract NFTMarket is AccessControl, ReentrancyGuard {
 
     event Start();
     event Bid(address indexed sender, uint amount);
@@ -35,49 +34,35 @@ contract NFTMarketplace is Initializable, AccessControlUpgradeable, ReentrancyGu
     mapping(uint => address[]) public biddersForNftId;
     
     // Role for the NFT minter
-    bytes32 public constant MINTER_ROLE = keccak256(abi.encodePacked(address(0xFbB28e9380B6657b4134329B47D9588aCfb8E33B)));
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     // Modifier to restrict functions to the NFT minter
     modifier onlyMinter() {
-        require(hasRole(MINTER_ROLE, _msgSender()), "Caller is not a minter");
+        require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
         _;
     }
 
     // Modifier to restrict functions to the seller
     modifier onlySeller() {
-        require(_msgSender() == seller, "Not the seller");
+        require(msg.sender == seller, "Not the seller");
         _;
     }
 
-    // Initialize function for upgradeable contract
-    function initialize(address _nft, uint _nftId, uint _startingBid) initializer public {
-        __NFTMarketplace_init(_nft, _nftId, _startingBid);
-    }
-
-    function __NFTMarketplace_init(address _nft, uint _nftId, uint _startingBid) internal initializer {
-        __AccessControl_init();
-
-        // Define roles before setting them up
-        _setRoleAdmin(MINTER_ROLE, DEFAULT_ADMIN_ROLE);
-        grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        grantRole(MINTER_ROLE, _msgSender());
-
-        __ReentrancyGuard_init();
-
+    // Constructor to initialize the NFT marketplace
+    constructor(address _nft, uint _nftId, uint _startingBid) {
         nft = IERC721(_nft);
         nftId = _nftId;
-        
-        seller = payable(_msgSender());
+
+        seller = payable(msg.sender);
         highestBid = _startingBid;
     }
 
     // Function for the seller to start the auction
     function start() external onlySeller {
         require(!started, "Auction already started");
-        // require(msg.sender == seller, "not seller");
 
         // Transfer the NFT to the marketplace contract
-        nft.transferFrom(_msgSender(), address(this), nftId);
+        nft.transferFrom(msg.sender, address(this), nftId);
         started = true;
         endAt = block.timestamp + 7 days;
 
@@ -92,25 +77,24 @@ contract NFTMarketplace is Initializable, AccessControlUpgradeable, ReentrancyGu
 
         // Update bid information
         if (highestBidder != address(0)) {
-            // bids[highestBidder] = bids[highestBidder].add(highestBid);
             bids[highestBidder] += highestBid;
         }
 
-        highestBidder = _msgSender();
+        highestBidder = msg.sender;
         highestBid = msg.value;
-        biddersForNftId[nftId].push(_msgSender());
+        biddersForNftId[nftId].push(msg.sender);
 
-        emit Bid(_msgSender(), msg.value);
+        emit Bid(msg.sender, msg.value);
     }
     
     // Function for bidders to withdraw their bid
     function withdraw() external nonReentrant {
-        uint bal = bids[_msgSender()];
-        bids[_msgSender()] = 0;
-        (bool success, ) = _msgSender().call{value: bal}("");
+        uint bal = bids[msg.sender];
+        bids[msg.sender] = 0;
+        (bool success, ) = msg.sender.call{value: bal}("");
         require(success, "Transfer failed");
     
-        emit Withdraw(_msgSender(), bal);
+        emit Withdraw(msg.sender, bal);
     }
 
     // Function for the seller to end the auction
