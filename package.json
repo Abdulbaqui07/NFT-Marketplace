@@ -9,13 +9,15 @@
   "author": "Abdulbaqui Ansari",
   "license": "ISC",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.2",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@openzeppelin/contracts": "^5.0.1",
     "@openzeppelin/contracts-upgradeable": "^5.0.1",
     "hardhat": "^2.19.2"
   },
   "dependencies": {
     "chai": "^4.3.10",
+    "dotenv": "^16.3.1",
     "web3-utils": "^4.1.0"
   }
 }

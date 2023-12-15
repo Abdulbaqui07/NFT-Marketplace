@@ -27,7 +27,74 @@ NFTMarketplace, is an Ethereum-based decentralized application (DApp) that facil
 ## Upgradeability
 This contract follows the OpenZeppelin Upgradeable Contracts pattern, allowing for future upgrades without disrupting existing functionalities. Ensure that upgradeable contracts are properly managed to avoid security risks.
 
-Try running some of the following tasks:
+## Helpers Overview
+
+After forking repo type ```npm i``` in your terminal to install all the required packages.
+
+## .env Setup
+
+```shell
+touch .env
+```
+
+Paste the below code in the .env file and update it with your specific keys.
+
+```
+API_URL = "https://eth-sepolia.g.alchemy.com/v2/<ALCHEMY_API_KEY>"
+PRIVATE_KEY = "<METAMASK_PRIVATE_KEY>"
+ETHERSCAN_API_KEY = "<ETHERSCAN_API_KEY>"
+```
+
+## Smart Contract 
+
+### Compile
+```shell
+npx hardhat compile
+```
+
+### Deploy
+
+#### MyNFT Contract
+```shell
+npx hardhat run scripts/deploy.js --network sepolia
+```
+
+#### NFTMarket Contract
+```shell
+npx hardhat run scripts/deployNFTMarket.js --network sepolia
+```
+
+#### NFTMarketUpgradable Contract
+```shell
+npx hardhat run scripts/deployNFTMarketUpgradable.js --network sepolia
+```
+
+### Verify on Etherscan
+
+#### MyNFT Contract
+```shell
+npx hardhat verify --network sepolia <TOKEN_CONTRACT_ADDRESS>
+```
+
+#### NFTMarket Contract 
+```shell
+npx hardhat verify --network sepolia --constructor-args sc <arguments.js> <DEPLOYED_CONTRACT_ADDRESS>
+```
+
+#### NFTMarketUpgradable Contract 
+```shell
+npx hardhat verify --network sepolia <DEPLOYED_CONTRACT_ADDRESS>
+```
+
+## Deployed and Verified on Sepolia testnet
+
+- **MYNFT.sol**: [![MYNFT.sol on Etherscan](https://sepolia.etherscan.io/address/0x083c44b1b8337fa4e57Dc4835527Dc583bfEec49#code)]
+
+- **NFTMarket.sol**: [![NFTMarket.sol on Etherscan](https://sepolia.etherscan.io/address/0x5020bf325420D6d2936C6110eccaD792f5a11ECE)]
+
+- **NFTMarketUpgrable.sol**: [![NFTMarketUpgrable.sol on Etherscan](https://sepolia.etherscan.io/address/0x43B2408132a56D8094a11e4d9EDe6ff86CAD38fD#code)]
+
+## Hardhat helpers
 
 ```shell
 npx hardhat help

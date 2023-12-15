@@ -5,7 +5,7 @@ async function main() {
     // Deploy MyNFT contract
     const MyNFT = await hre.ethers.getContractFactory("MyNFT");
     const myNFT = await MyNFT.deploy();
-    await myNFT.waitForDeployment();
+    await myNFT.deployed();
 
     console.log("MyNFT contract deployed to address:", myNFT.address);
 
@@ -21,7 +21,7 @@ async function main() {
     // Starting deployment, returning a promise that resolves to a contract object
     const nftMarket = await NFTMarket.deploy();
 
-    await nftMarket.waitForDeployment();
+    await nftMarket.deployed();
 
     console.log("NFTMarket contract deployed to address:", nftMarket.address);
 }
