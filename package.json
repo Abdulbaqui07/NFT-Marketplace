@@ -15,6 +15,7 @@
     "hardhat": "^2.19.2"
   },
   "dependencies": {
+    "chai": "^4.3.10",
     "web3-utils": "^4.1.0"
   }
 }
