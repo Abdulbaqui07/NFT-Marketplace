@@ -88,11 +88,11 @@ npx hardhat verify --network sepolia <DEPLOYED_CONTRACT_ADDRESS>
 
 ## Deployed and Verified on Sepolia testnet
 
-- **MYNFT.sol**: [View MYNFT.sol on Etherscan](https://sepolia.etherscan.io/address/0x083c44b1b8337fa4e57Dc4835527Dc583bfEec49#code)
+- **MYNFT.sol**: [View MYNFT.sol on Etherscan](https://sepolia.etherscan.io/address/0x083c44b1b8337fa4e57Dc4835527Dc583bfEec49#code){:target="_blank"}
 
-- **NFTMarket.sol**: ![View NFTMarket.sol on Etherscan](https://sepolia.etherscan.io/address/0x5020bf325420D6d2936C6110eccaD792f5a11ECE)
+- **NFTMarket.sol**: [View NFTMarket.sol on Etherscan](https://sepolia.etherscan.io/address/0x5020bf325420D6d2936C6110eccaD792f5a11ECE){:target="_blank"}
 
-- **NFTMarketUpgrable.sol**: ![View NFTMarketUpgrable.sol on Etherscan](https://sepolia.etherscan.io/address/0x43B2408132a56D8094a11e4d9EDe6ff86CAD38fD#code)
+- **NFTMarketUpgrable.sol**: [View NFTMarketUpgrable.sol on Etherscan](https://sepolia.etherscan.io/address/0x43B2408132a56D8094a11e4d9EDe6ff86CAD38fD#code){:target="_blank"}
 
 ## Hardhat helpers
 
